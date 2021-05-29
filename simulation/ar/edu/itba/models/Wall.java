@@ -69,12 +69,18 @@ public class Wall {
         return true;
     }
 
-    public double distLineToPointSquared(Vector point) {
+    
+    public Vector nearestPointFromLineToPoint(Vector point){
         // if length is zero then it is a point
         if (this.lenghtSquared == 0.0)
-            return this.startPos.getDistanceSquaredTo(point);
+            return this.startPos;
+        // calculate the projection of point vector in the line
+        // the 0 and 1 are so that the projection falls inside the segment
         double scalar = Math.max(0, Math.min(1, point.substract(startPos).dotProduct(endPos.substract(startPos)) / lenghtSquared));
-        return startPos.add(endPos.substract(startPos).scalarProduct(scalar)).getDistanceSquaredTo(point);
+        return startPos.add(endPos.substract(startPos).scalarProduct(scalar));
+    }
+    public double distLineToPointSquared(Vector point) {
+        return nearestPointFromLineToPoint(point).getDistanceSquaredTo(point);
     }
 
     public double distLineToPoint(Vector point) {
