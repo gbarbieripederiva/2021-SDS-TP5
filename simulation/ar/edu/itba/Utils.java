@@ -11,7 +11,7 @@ public class Utils {
         List <Particle> particles = new ArrayList<Particle>();
         for (int i = 0; i < 10; i++) {
             particles.add(new Particle(
-                minRadius,maxRadius,maxRadius,
+                1,
                 new Vector(0,i),
                 new Vector(0,0)
             ));

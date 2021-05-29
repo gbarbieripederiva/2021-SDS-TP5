@@ -2,40 +2,35 @@ package ar.edu.itba.models.particle;
 
 public class Particle {
     // props
-    private final double minRadius;
-    private final double maxRadius;
-    private double radius;
+    private ParticleRadius particleRadius;
     private Vector position;
     private Vector velocity;
 
     // constructors
     public Particle(Particle particle) {
-        minRadius = particle.minRadius;
-        maxRadius = particle.maxRadius;
-        radius = particle.radius;
+        particleRadius = new ParticleRadius(particle.particleRadius);
         position = new Vector(particle.getPosition());
         velocity = new Vector(particle.getVelocity());
     }
 
-    public Particle(double minRadius, double maxRadius, double radius, Vector position, Vector velocity) {
-        this.minRadius = minRadius;
-        this.maxRadius = maxRadius;
-        this.radius = radius;
+    public Particle(ParticleRadius radius, Vector position, Vector velocity) {
+        this.particleRadius = radius;
+        this.position = position;
+        this.velocity = velocity;
+    }
+
+    public Particle(double radius, Vector position, Vector velocity) {
+        this.particleRadius = new ParticleRadius(radius, radius, 1, radius);
         this.position = position;
         this.velocity = velocity;
     }
 
     // getters
-    public double getMinRadius() {
-        return minRadius;
-    }
-
-    public double getMaxRadius() {
-        return maxRadius;
-    }
-
     public double getRadius() {
-        return radius;
+        return particleRadius.getRadius();
+    }
+    public ParticleRadius getParticleRadius() {
+        return particleRadius;
     }
 
     public Vector getPosition() {
@@ -47,8 +42,11 @@ public class Particle {
     }
 
     // setters
+    public void setParticleRadius(ParticleRadius particleRadius) {
+        this.particleRadius = particleRadius;
+    }
     public void setRadius(double radius) {
-        this.radius = radius;
+        this.particleRadius.setRadius(radius);
     }
 
     public void setPosition(Vector position) {
@@ -58,4 +56,5 @@ public class Particle {
     public void setVelocity(Vector velocity) {
         this.velocity = velocity;
     }
+
 }
