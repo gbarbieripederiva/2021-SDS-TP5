@@ -57,4 +57,8 @@ public class Particle {
         this.velocity = velocity;
     }
 
+    // methods
+    public void updatePosition(double deltaTime){
+        position = position.add(velocity.scalarProduct(deltaTime));
+    }
 }
