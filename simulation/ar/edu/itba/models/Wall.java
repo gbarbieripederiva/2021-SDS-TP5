@@ -62,7 +62,7 @@ public class Wall {
         this.lenghtSquared = this.startPos.getDistanceSquaredTo(this.endPos);
     }
 
-    public boolean insideWall(Particle particle) {
+    public boolean isTouching(Particle particle) {
         if (this.distLineToPointSquared(particle.getPosition()) > particle.getRadius()*particle.getRadius()) {
             return false;
         }

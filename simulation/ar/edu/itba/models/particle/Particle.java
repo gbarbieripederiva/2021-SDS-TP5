@@ -128,8 +128,8 @@ public class Particle {
             this.velocity = getEscapeVelocity(getTarget());
             this.particleRadius.shrinkRadius();
         }else{
-            this.velocity = getNormalVelocity(getTarget());
             this.particleRadius.updateRadius(deltaTime);
+            this.velocity = getNormalVelocity(getTarget());
         }
         this.updatePosition(deltaTime);
         return this;
