@@ -41,43 +41,58 @@ public class ParticleRadius {
         return getCurrentRadius();
     }
 
+    public double getRangeOfRadius(){
+        return getMaxRadius() - getMinRadius();
+    }
+
+    public double getCurrentAboveMinRadius(){
+        return getRadius() - getMinRadius();
+    }
+
     // setters
-    public void setMinRadius(double minRadius) {
+    public ParticleRadius setMinRadius(double minRadius) {
         this.minRadius = minRadius;
+        return this;
     }
 
-    public void setMaxRadius(double maxRadius) {
+    public ParticleRadius setMaxRadius(double maxRadius) {
         this.maxRadius = maxRadius;
+        return this;
     }
 
-    public void setTimeToReachMax(double timeToReachMax) {
+    public ParticleRadius setTimeToReachMax(double timeToReachMax) {
         this.timeToReachMax = timeToReachMax;
+        return this;
     }
 
-    public void setCurrentRadius(double currentRadius) {
+    public ParticleRadius setCurrentRadius(double currentRadius) {
         this.currentRadius = currentRadius;
+        return this;
     }
 
-    public void setRadius(double setRadius) {
+    public ParticleRadius setRadius(double setRadius) {
         this.setCurrentRadius(setRadius);
+        return this;
     }
 
     // methods
-    public void shrinkRadius() {
+    public ParticleRadius shrinkRadius() {
         currentRadius = minRadius;
+        return this;
     }
 
-    public void updateRadius(double deltaTime) {
+    public ParticleRadius updateRadius(double deltaTime) {
         if (deltaTime == 0.0) {
-            return;
+            return this;
         }
         if (timeToReachMax == 0.0) {
             currentRadius = maxRadius;
-            return;
+            return this;
         }
         currentRadius += maxRadius / (timeToReachMax / deltaTime);
         if (currentRadius > maxRadius) {
             currentRadius = maxRadius;
         }
+        return this;
     }
 }
