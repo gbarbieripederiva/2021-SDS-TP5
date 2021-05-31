@@ -19,7 +19,7 @@ public class CPMSystem {
         this.particles = particles;
     }
 
-    public void simulateStep(List<Particle> particles,double deltaTime){
+    public void simulateStep(){
         /*
             TODO: check the following things
 

@@ -69,34 +69,11 @@ public class GenerateFiles {
         }
 
         // Write to file
-        for (Wall wall : walls) {
-            writer.write( "" + 
-                wall.getStartPos().getX() + " " + wall.getStartPos().getY() + " " +
-                wall.getEndPos().getX() + " " + wall.getEndPos().getY() + "\n"
-            );
-        }
+        Utils.writeWalls(walls, writer);
         writer.write("\n");
-        for (Wall wall : targets) {
-            writer.write( "" + 
-                wall.getStartPos().getX() + " " + wall.getStartPos().getY() + " " +
-                wall.getEndPos().getX() + " " + wall.getEndPos().getY() + "\n"
-            );
-        }
+        Utils.writeWalls(targets, writer);
         writer.write("\n");
-        for (Particle particle : particles) {
-            writer.write( "" + 
-                particle.getParticleRadius().getMinRadius() + " " +
-                particle.getParticleRadius().getMaxRadius() + " " +
-                particle.getParticleRadius().getTimeToReachMax() + " " +
-                particle.getParticleRadius().getRadius() + " " +
-
-                particle.getDesiredSpeed() + " " +
-                particle.getBeta() + " " +
-
-                particle.getPosition().getX() + " " + particle.getPosition().getY() + " " +
-                particle.getVelocity().getX() + " " + particle.getVelocity().getY() + "\n"
-            );
-        }
+        Utils.writeParticles(particles, writer);
         
 
         // Close file
