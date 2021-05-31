@@ -12,21 +12,17 @@ public class Wall {
     protected Vector startPos;
     protected Vector endPos;
     protected double lenghtSquared;
-    // isLeft is true if the wall extends to the left
-    // and falls if it extends to the right
-    protected boolean isLeft;
 
     // constructor
     public Wall(Wall wall) {
         startPos = wall.startPos;
         endPos = wall.endPos;
-        isLeft = wall.isLeft;
     }
 
-    public Wall(Vector startPos, Vector endPos, boolean isLeft) {
+    // start -> end should go in a counterclockwise fashion so that the "width" is to the right
+    public Wall(Vector startPos, Vector endPos) {
         this.startPos = startPos;
         this.endPos = endPos;
-        this.isLeft = isLeft;
         this.lenghtSquared = startPos.getDistanceSquaredTo(endPos);
     }
 
@@ -39,10 +35,6 @@ public class Wall {
         return endPos;
     }
 
-    public boolean getIsLeft() {
-        return isLeft;
-    }
-
     // setters
     public void setStartPos(Vector startPos) {
         this.startPos = startPos;
@@ -52,10 +44,6 @@ public class Wall {
     public void setEndPos(Vector endPos) {
         this.endPos = endPos;
         updateLengthSquared();
-    }
-
-    public void setIsLeft(boolean isLeft) {
-        this.isLeft = isLeft;
     }
 
     protected void updateLengthSquared() {
