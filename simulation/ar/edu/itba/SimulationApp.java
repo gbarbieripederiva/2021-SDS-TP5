@@ -101,7 +101,6 @@ public class SimulationApp {
         Utils.writeWalls(system.targets, writer);
         writer.write("\n");
         Utils.writeParticles(system.particles, writer);
-        writer.write("\n");
 
 
         // loop until condition is met
