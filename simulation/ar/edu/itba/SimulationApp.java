@@ -39,7 +39,7 @@ public class SimulationApp {
         List<Particle> particles = new ArrayList<>();
         ReadingFileState state = ReadingFileState.READING_WALLS;
         while(scanner.hasNextLine() && state != ReadingFileState.IGNORE){
-            String line[] = scanner.nextLine().strip().split(" ");
+            String line[] = scanner.nextLine().replaceAll("^\\s+","").replaceAll("\\s+$", "").split(" ");
             switch (state) {
                 case READING_WALLS:
                     if(line == null || line.length < 4){
