@@ -8,6 +8,10 @@ compile:$(JAVA_SOURCES)
 run:compile
 	java -cp $(OUT_FOLDER) ar.edu.itba.SimulationApp
 
+generateFiles:compile
+	java -cp $(OUT_FOLDER) ar.edu.itba.GenerateFiles
+
+
 __debug_run_all:run visualizer
 
 visualizer:

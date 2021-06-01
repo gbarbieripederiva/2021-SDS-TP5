@@ -60,7 +60,7 @@ public class CPMSystem {
                 // TODO: look into particle having a reference to an iterator of targets
                 target = this.targets.get(p.getTargetNumber());
                 if(target.isTouching(p)){
-                    if(this.targets.size() < p.getTargetNumber()){
+                    if(this.targets.size() > p.getTargetNumber()+1){
                         p.setTargetNumber(p.getTargetNumber()+1);
                     }else{
                         it.remove();
@@ -70,7 +70,6 @@ public class CPMSystem {
             }
             if(!removed && target != null){
                 Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
-                pTarget = pTarget.substract(p.getPosition());
                 p.setTarget(pTarget);
             }
             if(!removed){

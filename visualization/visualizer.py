@@ -31,9 +31,15 @@ while line:
     if len(line) < 2:
             i+=1
     elif i == 0:
-        walls.append([float(line[0]),float(line[1])])
+        walls.append([
+            (float(line[0]),float(line[1])),
+            (float(line[2]),float(line[3]))
+        ])
     elif i == 1:
-        targets.append([float(line[0]),float(line[1])])
+        targets.append([
+            (float(line[0]),float(line[1])),
+            (float(line[2]),float(line[3]))
+        ])
     else:
         snapi = i - 2
         while len(snaps) <= snapi:
@@ -53,11 +59,18 @@ def update_circles(i):
     return patch_collection
 
 ax = plt.gca()
+for w in walls:
+    print(w)
+    ax.add_line(plt.Line2D((w[0][0],w[1][0]),(w[0][1],w[1][1])))
+for t in targets:
+    ax.add_line(plt.Line2D((t[0][0],t[1][0]),(t[0][1],t[1][1]), color="red"))
+    
 patch_collection = PatchCollection(get_circles(snaps[0]))
 ax.add_collection(patch_collection)
 
 plt.xlim([-5, 25])
-plt.ylim([-10, 20])
+plt.ylim([-15, 25])
+plt.gcf().set_size_inches(16,12)
 
 ani = FuncAnimation(plt.gcf(),update_circles,frames=len(snaps),interval=10,blit=False)
 

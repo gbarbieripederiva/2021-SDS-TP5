@@ -111,12 +111,7 @@ public class Particle {
         return this;
     }
     public Particle setTarget(Vector target){
-        double targetMagnitude = target.getMagnitude();
-        if(targetMagnitude != 0){
-            this.target = target.scalarProduct(1/targetMagnitude);
-        }else{
-            this.target = target;
-        }
+        this.target = target;
         return this;
     }
     
@@ -140,15 +135,20 @@ public class Particle {
         return this;
     }
 
-    public Vector getNormalVelocity(Vector vector) {
+    public Vector getNormalVelocity(Vector target) {
+        Vector direction = target.substract(getPosition());
+        double length = direction.getMagnitude();
+        if(length != 0){
+            direction = direction.scalarProduct(1/length);
+        }
         double scalar = getDesiredSpeed()*Math.pow(
             getParticleRadius().getCurrentAboveMinRadius() / getParticleRadius().getRangeOfRadius(),
             getBeta());
-        return vector.scalarProduct(scalar);
+        return direction.scalarProduct(scalar);
     }
 
     public Vector getEscapeVelocity(Vector point){
-        Vector direction = point.substract(position);
+        Vector direction = getPosition().substract(point);
         double length = direction.getMagnitude();
         if(length != 0){
             direction = direction.scalarProduct(1/length);
