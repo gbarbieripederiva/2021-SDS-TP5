@@ -70,8 +70,10 @@ public class CPMSystem {
             }
             if(!removed && target != null){
                 Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
-                pTarget = p.getPosition().substract(pTarget);
+                pTarget = pTarget.substract(p.getPosition());
                 p.setTarget(pTarget);
+            }
+            if(!removed){
                 p.update(deltaTime);
             }
         }

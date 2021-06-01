@@ -42,15 +42,23 @@ while line:
     
     line = f.readline()
 
-def drawSnap(particles):
+def get_circles(particles):
+    return [plt.Circle((p.x,p.y),p.r) for p in particles]
+
+def update_circles(i):
     global ax
-    circles = [plt.Circle((p.x,p.y),p.r) for p in particles]
-    col = PatchCollection(circles)
-    ax.add_collection(col)
-    return ax
+    global patch_collection
+    global snaps
+    patch_collection.set_paths(get_circles(snaps[i]))
+    return patch_collection
 
 ax = plt.gca()
+patch_collection = PatchCollection(get_circles(snaps[0]))
+ax.add_collection(patch_collection)
 
-ani = FuncAnimation(ax.figure,drawSnap,snaps,interval=100)
+plt.xlim([-5, 25])
+plt.ylim([-10, 20])
+
+ani = FuncAnimation(plt.gcf(),update_circles,frames=len(snaps),interval=10,blit=False)
 
 plt.show()

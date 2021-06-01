@@ -8,5 +8,7 @@ compile:$(JAVA_SOURCES)
 run:compile
 	java -cp $(OUT_FOLDER) ar.edu.itba.SimulationApp
 
+__debug_run_all:run visualizer
+
 visualizer:
 	bash -c "cd visualization;source .env/bin/activate; python visualizer.py"
