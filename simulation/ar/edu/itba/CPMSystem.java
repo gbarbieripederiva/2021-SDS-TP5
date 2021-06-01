@@ -5,6 +5,7 @@ import java.util.List;
 
 import ar.edu.itba.models.Wall;
 import ar.edu.itba.models.particle.Particle;
+import ar.edu.itba.models.particle.Vector;
 
 public class CPMSystem {
     public double deltaTime;
@@ -54,9 +55,10 @@ public class CPMSystem {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             boolean removed = false;
+            Wall target = null;
             if(!p.getIsEscaping()){
                 // TODO: look into particle having a reference to an iterator of targets
-                Wall target = this.targets.get(p.getTargetNumber());
+                target = this.targets.get(p.getTargetNumber());
                 if(target.isTouching(p)){
                     if(this.targets.size() < p.getTargetNumber()){
                         p.setTargetNumber(p.getTargetNumber()+1);
@@ -66,7 +68,10 @@ public class CPMSystem {
                     }
                 }
             }
-            if(!removed){
+            if(!removed && target != null){
+                Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
+                pTarget = p.getPosition().substract(pTarget);
+                p.setTarget(pTarget);
                 p.update(deltaTime);
             }
         }

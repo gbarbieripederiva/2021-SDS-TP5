@@ -111,7 +111,12 @@ public class Particle {
         return this;
     }
     public Particle setTarget(Vector target){
-        this.target = target;
+        double targetMagnitude = target.getMagnitude();
+        if(targetMagnitude != 0){
+            this.target = target.scalarProduct(1/targetMagnitude);
+        }else{
+            this.target = target;
+        }
         return this;
     }
     
