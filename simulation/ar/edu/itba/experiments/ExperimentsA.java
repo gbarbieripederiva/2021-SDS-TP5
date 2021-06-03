@@ -17,7 +17,7 @@ import ar.edu.itba.models.particle.Vector;
 
 public class ExperimentsA {
     private static final int TRIES_TO_DO = 10;
-    private static final String OUTPUT_FILENAME = "./data/experimentA.txt";
+    private static final String OUTPUT_FILENAME = "./data/experiment/experimentA.txt";
     private static final double OPEN_SPACE = 1.2;
     private static final double WALL_SIDE = 20;
     private static final double TARGET_WALL_GAP = 0.1;
