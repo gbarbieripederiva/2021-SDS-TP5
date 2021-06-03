@@ -1,7 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 
-EXPERIMENT_DATA_PATH = os.path.join("..","data","experiment", "experimentA.txt")
+EXPERIMENT_DATA_PATH = os.path.join("..","data","experiment", "experimentAB.txt")
 
 def parse(path):
     file = open(path, "r")
