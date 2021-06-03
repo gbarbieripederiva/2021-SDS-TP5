@@ -46,7 +46,7 @@ public class ExperimentsA {
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString(), false));   
 
-        writer.write(""+SEED);
+        writer.write("" + SEED + " " + TIME_STEP);
 
         for (int tries = 0; tries < TRIES_TO_DO; tries++) {
             writer.write("\n");
