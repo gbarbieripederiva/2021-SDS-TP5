@@ -52,14 +52,19 @@ public class ExperimentsA {
             writer.write("\n");
             // Generate system and execute simulation
             CPMSystem system = generateSystem();
-            for(long i = 0,pqty = system.particles.size(); system.particles.size() > 0; i++){
+            long i = 0;
+            int pqty = system.particles.size();
+            for(; system.particles.size() > 0; i++){
                 int currPqty = system.particles.size();
-                if(pqty != currPqty){
+                if(pqty - currPqty > 0){
+                    for (int j = 0; j < pqty - currPqty; j++) {
+                        writer.write(""+(system.deltaTime * i)+" ");       
+                    }
                     pqty = currPqty;
-                    writer.write(""+(system.deltaTime * i)+" ");
                 }
                 system.simulateStep();
             }
+            writer.write(""+(system.deltaTime * i)+" ");
             System.out.println("tries:"+tries);
         }
         // close files
