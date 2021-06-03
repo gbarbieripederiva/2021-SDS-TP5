@@ -67,6 +67,15 @@ public class Vector {
         return Math.sqrt(getMagnitudeSquared());
     }
 
+    public Vector getVersor(){
+        double magnitude = getMagnitude();
+        if(magnitude == 0){
+            return new Vector(this);
+        }else{
+            return new Vector(this).scalarProduct( 1 / magnitude);
+        }
+    }
+
     // object methods
     @Override
     public boolean equals(Object o) {
