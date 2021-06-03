@@ -20,7 +20,7 @@ public class GenerateFiles {
     private static final double WALL_SIDE = 20;
     private static final double TARGET_WALL_GAP = 0.1;
     private static final double SECOND_TARGET_DISTANCE = 10;
-    private static final int PARTICLES_TO_GENERATE = 20;
+    private static final int PARTICLES_TO_GENERATE = 200;
     private static final double MIN_RADIUS = 0.15 ;
     private static final double MAX_RADIUS = 0.32;
     private static final double TIME_TO_REACH_MAX_RADIUS = 0.5;
