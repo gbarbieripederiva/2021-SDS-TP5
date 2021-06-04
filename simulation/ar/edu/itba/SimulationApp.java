@@ -119,6 +119,6 @@ public class SimulationApp {
 
 
     private static boolean continueLooping(double time, CPMSystem system) {
-        return system.particles.size() > 0;
+        return TIME_STEP * 2000000 > time && system.particles.size() > 0;
     }
 }

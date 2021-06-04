@@ -63,24 +63,22 @@ public class CPMSystem {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             boolean removed = false;
-            Wall target = null;
-            if(!p.getIsEscaping()){
-                // TODO: look into particle having a reference to an iterator of targets
-                target = this.targets.get(p.getTargetNumber());
-                if(target.isTouching(p)){
-                    if(this.targets.size() > p.getTargetNumber()+1){
-                        p.setTargetNumber(p.getTargetNumber()+1);
-                    }else{
-                        it.remove();
-                        removed = true;
-                    }
+            // TODO: look into particle having a reference to an iterator of targets
+            Wall target = this.targets.get(p.getTargetNumber());
+            if(target.isTouching(p)){
+                if(this.targets.size() > p.getTargetNumber()+1){
+                    p.setTargetNumber(p.getTargetNumber()+1);
+                    target = this.targets.get(p.getTargetNumber());
+                }else{
+                    it.remove();
+                    removed = true;
                 }
             }
-            if(!removed && target != null){
-                Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
-                p.setDirection(pTarget.substract(p.getPosition()));
-            }
             if(!removed){
+                if(!p.getIsEscaping()){
+                    Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
+                    p.setDirection(pTarget.substract(p.getPosition()));
+                }
                 p.update(deltaTime);
             }
         }
