@@ -11,8 +11,16 @@ run:compile
 generateFiles:compile
 	java -cp $(OUT_FOLDER) ar.edu.itba.GenerateFiles
 
+experimentsAB:compile
+	java -cp $(OUT_FOLDER) ar.edu.itba.experiments.ExperimentsAB
 
 __debug_run_all:run visualizer
 
 visualizer:
 	bash -c "cd visualization;source .env/bin/activate; python visualizer.py"
+
+graphA:
+	bash -c "cd visualization;source .env/bin/activate; python graphA.py"
+
+graphB:
+	bash -c "cd visualization;source .env/bin/activate; python graphB.py"
