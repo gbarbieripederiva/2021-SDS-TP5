@@ -57,7 +57,7 @@ public class GenerateFiles {
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < PARTICLES_TO_GENERATE; i++) {
             particles.add(new Particle(
-                new ParticleRadius(MIN_RADIUS, MAX_RADIUS, TIME_TO_REACH_MAX_RADIUS, MAX_RADIUS), 
+                new ParticleRadius(MIN_RADIUS, MAX_RADIUS, TIME_TO_REACH_MAX_RADIUS, MIN_RADIUS), 
                 DESIRED_SPEED, 
                 SPEED_RADIUS_RELATION,
                 new Vector(
