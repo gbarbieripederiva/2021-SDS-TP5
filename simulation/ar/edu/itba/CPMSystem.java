@@ -31,8 +31,10 @@ public class CPMSystem {
             4)  The interaction between particles maybe optimized wth cellIndexMethod (Agus help!!)
         */
         // No particle starts escaping for no reason
+        Vector vec0 = new Vector(0,0);
         for (Particle p : particles) {
             p.setIsEscaping(false);
+            p.setDirection(vec0);
         }
         for (int i = 0; i < particles.size(); i++) {
             Particle p1 = particles.get(i);
@@ -41,13 +43,19 @@ public class CPMSystem {
                 
                 // The reason
                 if (p1.isTouching(p2)) {
-                    p1.setIsEscaping(true).setTarget(p2.getPosition());
-                    p2.setIsEscaping(true).setTarget(p1.getPosition());
+                    Vector p1top2Versor = p2.getPosition().substract(p1.getPosition()).getVersor();
+                    p1.setIsEscaping(true)
+                        .setDirection(p1.getDirection().add(p1top2Versor.scalarProduct(-1)));
+                    p2.setIsEscaping(true)
+                        .setDirection(p1.getDirection().add(p1top2Versor));
                 } 
             }
             for (Wall w : this.walls) {
                 if(w.isTouching(p1)){
-                    p1.setIsEscaping(true).setTarget(w.nearestPointFromLineToPoint(p1.getPosition()));
+                    Vector ptop1Versor = w.nearestPointFromLineToPoint(p1.getPosition());
+                    ptop1Versor = p1.getPosition().substract(ptop1Versor).getVersor();
+                    p1.setIsEscaping(true)
+                        .setDirection(p1.getDirection().add(ptop1Versor));
                 }
             }
         }
@@ -55,24 +63,22 @@ public class CPMSystem {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             boolean removed = false;
-            Wall target = null;
-            if(!p.getIsEscaping()){
-                // TODO: look into particle having a reference to an iterator of targets
-                target = this.targets.get(p.getTargetNumber());
-                if(target.isTouching(p)){
-                    if(this.targets.size() > p.getTargetNumber()+1){
-                        p.setTargetNumber(p.getTargetNumber()+1);
-                    }else{
-                        it.remove();
-                        removed = true;
-                    }
+            // TODO: look into particle having a reference to an iterator of targets
+            Wall target = this.targets.get(p.getTargetNumber());
+            if(target.isTouching(p)){
+                if(this.targets.size() > p.getTargetNumber()+1){
+                    p.setTargetNumber(p.getTargetNumber()+1);
+                    target = this.targets.get(p.getTargetNumber());
+                }else{
+                    it.remove();
+                    removed = true;
                 }
             }
-            if(!removed && target != null){
-                Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
-                p.setTarget(pTarget);
-            }
             if(!removed){
+                if(!p.getIsEscaping()){
+                    Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
+                    p.setDirection(pTarget.substract(p.getPosition()));
+                }
                 p.update(deltaTime);
             }
         }

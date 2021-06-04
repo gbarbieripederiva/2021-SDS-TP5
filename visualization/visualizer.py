@@ -56,11 +56,11 @@ def update_circles(i):
     global patch_collection
     global snaps
     patch_collection.set_paths(get_circles(snaps[i]))
+    ax.set_title("time: {:.2}".format(i*0.01))
     return patch_collection
 
 ax = plt.gca()
 for w in walls:
-    print(w)
     ax.add_line(plt.Line2D((w[0][0],w[1][0]),(w[0][1],w[1][1])))
 for t in targets:
     ax.add_line(plt.Line2D((t[0][0],t[1][0]),(t[0][1],t[1][1]), color="red"))

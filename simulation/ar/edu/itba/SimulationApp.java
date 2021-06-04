@@ -15,10 +15,9 @@ import ar.edu.itba.models.particle.ParticleRadius;
 import ar.edu.itba.models.particle.Vector;
 
 public class SimulationApp {
-    public static final double TIME_STEP = 0.01;
+    public static final double TIME_STEP = 0.001;
     public static final String INPUT_FILENAME = "./data/system.txt";
     public static final String OUTPUT_FILENAME = "./data/output.txt";
-    private static final long MAX_STEPS = 1000000; 
 
     private static enum ReadingFileState{
         READING_WALLS,
@@ -105,7 +104,7 @@ public class SimulationApp {
 
         // loop until condition is met
         for(long i = 0; continueLooping(system.deltaTime * i,system); i++){
-            if(i%10 == 0 && i != 0){
+            if(i%100 == 0 && i != 0){
                 writer.write("\n");
                 Utils.writeParticles(system.particles, writer);
             }
@@ -120,6 +119,6 @@ public class SimulationApp {
 
 
     private static boolean continueLooping(double time, CPMSystem system) {
-        return  time < MAX_STEPS * system.deltaTime && system.particles.size() > 0;
+        return TIME_STEP * 2000000 > time && system.particles.size() > 0;
     }
 }

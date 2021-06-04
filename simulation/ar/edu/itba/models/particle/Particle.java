@@ -14,7 +14,7 @@ public class Particle {
 
     // props to set before update
     private boolean isEscaping = false;
-    private Vector target = new Vector(0,0);
+    private Vector direction = new Vector(0,0);
     
     // constructors
     public Particle(Particle particle) {
@@ -68,8 +68,8 @@ public class Particle {
     public boolean getIsEscaping(){
         return isEscaping;
     }
-    public Vector getTarget(){
-        return target;
+    public Vector getDirection(){
+        return direction;
     }
 
     // setters
@@ -110,8 +110,8 @@ public class Particle {
         this.isEscaping = isEscaping;
         return this;
     }
-    public Particle setTarget(Vector target){
-        this.target = target;
+    public Particle setDirection(Vector direction){
+        this.direction = direction;
         return this;
     }
     
@@ -125,36 +125,26 @@ public class Particle {
     // before calling this target and isEscaping should be properly set
     public Particle update(double deltaTime){
         if(getIsEscaping()){
-            this.velocity = getEscapeVelocity(getTarget());
             this.particleRadius.shrinkRadius();
+            this.velocity = getEscapeVelocity(getDirection());
         }else{
             this.particleRadius.updateRadius(deltaTime);
-            this.velocity = getNormalVelocity(getTarget());
+            this.velocity = getNormalVelocity(getDirection());
         }
         this.updatePosition(deltaTime);
         return this;
     }
 
-    public Vector getNormalVelocity(Vector target) {
-        Vector direction = target.substract(getPosition());
-        double length = direction.getMagnitude();
-        if(length != 0){
-            direction = direction.scalarProduct(1/length);
-        }
+    public Vector getNormalVelocity(Vector direction) {
+        direction = direction.getVersor();
         double scalar = getDesiredSpeed()*Math.pow(
             getParticleRadius().getCurrentAboveMinRadius() / getParticleRadius().getRangeOfRadius(),
             getBeta());
         return direction.scalarProduct(scalar);
     }
 
-    public Vector getEscapeVelocity(Vector point){
-        Vector direction = getPosition().substract(point);
-        double length = direction.getMagnitude();
-        if(length != 0){
-            direction = direction.scalarProduct(1/length);
-        }else{
-            // TODO: check what to when they are the same point
-        }
+    public Vector getEscapeVelocity(Vector direction){
+        direction = direction.getVersor();
         return direction.scalarProduct(getDesiredSpeed());
     }
 
