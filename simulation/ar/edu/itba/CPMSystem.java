@@ -76,7 +76,24 @@ public class CPMSystem {
             }
             if(!removed){
                 if(!p.getIsEscaping()){
-                    Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
+                    Vector pTarget = null;
+                    if(p.getTargetNumber() == 0){
+                        if(
+                            p.getPosition().getX() > target.getEndPos().getX() + 0.2 * target.getLength() &&
+                            p.getPosition().getX() < target.getEndPos().getX() + 0.8 * target.getLength()
+                            ){
+                            pTarget = target.nearestPointFromLineToPoint(p.getPosition());                            
+                        }else{
+                            pTarget = new Vector(
+                                target.getEndPos().getX() 
+                                    + 0.2*target.getLength() 
+                                    + 0.6 * target.getLength() * Math.random(),
+                                target.getEndPos().getY()
+                            );
+                        }
+                    }else{
+                        pTarget = target.nearestPointFromLineToPoint(p.getPosition());
+                    }
                     p.setDirection(pTarget.substract(p.getPosition()));
                 }
                 p.update(deltaTime);

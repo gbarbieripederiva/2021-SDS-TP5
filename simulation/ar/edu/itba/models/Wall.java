@@ -46,6 +46,10 @@ public class Wall {
         updateLengthSquared();
     }
 
+    public double getLength() {
+        return Math.sqrt(this.lenghtSquared);
+    }
+
     protected void updateLengthSquared() {
         this.lenghtSquared = this.startPos.getDistanceSquaredTo(this.endPos);
     }

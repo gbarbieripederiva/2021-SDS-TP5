@@ -25,7 +25,7 @@ public class GenerateFiles {
     private static final double MAX_RADIUS = 0.32;
     private static final double TIME_TO_REACH_MAX_RADIUS = 0.5;
     private static final double SPEED_RADIUS_RELATION = 0.9;
-    private static final double DESIRED_SPEED = 1.55;
+    private static final double DESIRED_SPEED = 2.0;
 
     public static void main(String[] args) throws IOException {
         

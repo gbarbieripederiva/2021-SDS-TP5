@@ -15,7 +15,7 @@ import ar.edu.itba.models.particle.ParticleRadius;
 import ar.edu.itba.models.particle.Vector;
 
 public class SimulationApp {
-    public static final double TIME_STEP = 0.001;
+    public static final double TIME_STEP = 0.025;
     public static final String INPUT_FILENAME = "./data/system.txt";
     public static final String OUTPUT_FILENAME = "./data/output.txt";
 
