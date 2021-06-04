@@ -125,8 +125,8 @@ public class Particle {
     // before calling this target and isEscaping should be properly set
     public Particle update(double deltaTime){
         if(getIsEscaping()){
-            this.velocity = getEscapeVelocity(getDirection());
             this.particleRadius.shrinkRadius();
+            this.velocity = getEscapeVelocity(getDirection());
         }else{
             this.particleRadius.updateRadius(deltaTime);
             this.velocity = getNormalVelocity(getDirection());
@@ -135,16 +135,16 @@ public class Particle {
         return this;
     }
 
-    public Vector getNormalVelocity(Vector target) {
-        Vector direction = this.direction.getVersor();
+    public Vector getNormalVelocity(Vector direction) {
+        direction = direction.getVersor();
         double scalar = getDesiredSpeed()*Math.pow(
             getParticleRadius().getCurrentAboveMinRadius() / getParticleRadius().getRangeOfRadius(),
             getBeta());
         return direction.scalarProduct(scalar);
     }
 
-    public Vector getEscapeVelocity(Vector point){
-        Vector direction = this.direction.getVersor();
+    public Vector getEscapeVelocity(Vector direction){
+        direction = direction.getVersor();
         return direction.scalarProduct(getDesiredSpeed());
     }
 
