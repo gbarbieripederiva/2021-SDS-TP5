@@ -65,7 +65,7 @@ public class CPMSystem {
             boolean removed = false;
             // TODO: look into particle having a reference to an iterator of targets
             Wall target = this.targets.get(p.getTargetNumber());
-            if(target.isTouching(p)){
+            if(target.getStartPos().getY() >= p.getPosition().getY()){
                 if(this.targets.size() > p.getTargetNumber()+1){
                     p.setTargetNumber(p.getTargetNumber()+1);
                     target = this.targets.get(p.getTargetNumber());
