@@ -31,8 +31,10 @@ public class CPMSystem {
             4)  The interaction between particles maybe optimized wth cellIndexMethod (Agus help!!)
         */
         // No particle starts escaping for no reason
+        Vector vec0 = new Vector(0,0);
         for (Particle p : particles) {
             p.setIsEscaping(false);
+            p.setDirection(vec0);
         }
         for (int i = 0; i < particles.size(); i++) {
             Particle p1 = particles.get(i);
@@ -41,13 +43,19 @@ public class CPMSystem {
                 
                 // The reason
                 if (p1.isTouching(p2)) {
-                    p1.setIsEscaping(true).setTarget(p2.getPosition());
-                    p2.setIsEscaping(true).setTarget(p1.getPosition());
+                    Vector p1top2Versor = p2.getPosition().substract(p1.getPosition()).getVersor();
+                    p1.setIsEscaping(true)
+                        .setDirection(p1.getDirection().add(p1top2Versor.scalarProduct(-1)));
+                    p2.setIsEscaping(true)
+                        .setDirection(p1.getDirection().add(p1top2Versor));
                 } 
             }
             for (Wall w : this.walls) {
                 if(w.isTouching(p1)){
-                    p1.setIsEscaping(true).setTarget(w.nearestPointFromLineToPoint(p1.getPosition()));
+                    Vector ptop1Versor = w.nearestPointFromLineToPoint(p1.getPosition());
+                    ptop1Versor = p1.getPosition().substract(ptop1Versor).getVersor();
+                    p1.setIsEscaping(true)
+                        .setDirection(p1.getDirection().add(ptop1Versor));
                 }
             }
         }
@@ -70,7 +78,7 @@ public class CPMSystem {
             }
             if(!removed && target != null){
                 Vector pTarget = target.nearestPointFromLineToPoint(p.getPosition());
-                p.setTarget(pTarget);
+                p.setDirection(pTarget.substract(p.getPosition()));
             }
             if(!removed){
                 p.update(deltaTime);
