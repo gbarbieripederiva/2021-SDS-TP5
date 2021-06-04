@@ -70,7 +70,7 @@ ax.add_collection(patch_collection)
 
 plt.xlim([-5, 25])
 plt.ylim([-15, 25])
-plt.gcf().set_size_inches(16,12)
+plt.gcf().set_size_inches(12,12)
 
 ani = FuncAnimation(plt.gcf(),update_circles,frames=len(snaps),interval=1,blit=False)
 
