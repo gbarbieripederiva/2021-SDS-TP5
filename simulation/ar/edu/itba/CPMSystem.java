@@ -59,7 +59,15 @@ public class CPMSystem {
                 }
             }
         }
-        // Set target of all particles with no target and update them
+        /* 
+            Set target of all particles with no target and update them
+            this is done against my will, to generalize the system
+            one should probably handle different the way in which
+            one considers that the target was reached. Also, the random
+            should be taken out and a nearestPoint should be used. 
+            For this particular system, though, this works so we'll
+            roll it
+        */ 
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             boolean removed = false;
