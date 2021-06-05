@@ -55,8 +55,9 @@ public class ExperimentsAB {
             long pqty = system.particles.stream()
                         .filter( v -> v.getTargetNumber() == 0 )
                         .count();
+            long currPqty;
             for(; system.particles.size() > 0; i++){
-                long currPqty = system.particles.stream()
+                currPqty = system.particles.stream()
                                     .filter( v -> v.getTargetNumber() == 0 )
                                     .count();
                 if(pqty - currPqty > 0){
@@ -67,7 +68,17 @@ public class ExperimentsAB {
                 }
                 system.simulateStep();
             }
-            writer.write(""+(system.deltaTime * i)+" ");
+            currPqty = system.particles.stream()
+                                    .filter( v -> v.getTargetNumber() == 0 )
+                                    .count();
+                
+            if(pqty - currPqty > 0){
+                for (int j = 0; j < pqty - currPqty; j++) {
+                    writer.write(""+(system.deltaTime * i)+" ");       
+                }
+                pqty = currPqty;
+                writer.write(""+(system.deltaTime * i)+" ");
+            }
             System.out.println("tries:"+tries);
         }
         // close files
