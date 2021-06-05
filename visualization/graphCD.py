@@ -110,7 +110,7 @@ plt.show()
 
 caudales_teoricos = []
 for d, r in zip(ds, avg_r):
-    caudales_teoricos.append((d-0.5*r) ** 1.5)  # TODO: Chequear formula
+    caudales_teoricos.append((d-0.5*r) ** 1.5)
 
 precision = 0.00001
 Bs = np.arange(0, 1.25, precision)
