@@ -45,7 +45,6 @@ public class ExperimentCD {
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString(), false));
 
-        // TODO: intervalo donde el caudal es estacionario durante la descarga
         writer.write("" + SEED + "-" + TIME_STEP);
         for (int simulationNumber = 0; simulationNumber < OPEN_SPACES.length; simulationNumber++) {
             writer.write("\n" + OPEN_SPACES[simulationNumber] + "-" + PARTICLES_TO_GENERATE[simulationNumber]);
@@ -54,10 +53,18 @@ public class ExperimentCD {
                 // Generate system and execute simulation
                 CPMSystem system = generateSystem(OPEN_SPACES[simulationNumber], PARTICLES_TO_GENERATE[simulationNumber]);
                 long i = 0;
-                int pqty = system.particles.size();
+                int pqty = 0;
+                for (Particle particle: system.particles){
+                    if(particle.getTargetNumber() == 0)
+                        pqty++;
+                }
 //                int previousQty = pqty;
+                int currPqty = 0;
                 for (; system.particles.size() > 0; i++) {
-                    int currPqty = system.particles.size();
+                    for (Particle particle: system.particles){
+                        if(particle.getTargetNumber() == 0)
+                            currPqty++;
+                    }
 //                    if (previousQty - currPqty > 0) {
                         double avgRadius = 0;
                         for (Particle particle: system.particles){
