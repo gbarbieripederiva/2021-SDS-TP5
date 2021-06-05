@@ -52,9 +52,13 @@ public class ExperimentsAB {
             // Generate system and execute simulation
             CPMSystem system = generateSystem();
             long i = 0;
-            int pqty = system.particles.size();
+            long pqty = system.particles.stream()
+                        .filter( v -> v.getTargetNumber() == 0 )
+                        .count();
             for(; system.particles.size() > 0; i++){
-                int currPqty = system.particles.size();
+                long currPqty = system.particles.stream()
+                                    .filter( v -> v.getTargetNumber() == 0 )
+                                    .count();
                 if(pqty - currPqty > 0){
                     for (int j = 0; j < pqty - currPqty; j++) {
                         writer.write(""+(system.deltaTime * i)+" ");       
