@@ -9,7 +9,6 @@ public class Particle {
     // props of this system
     private double desiredSpeed;
     private double beta;
-    // TODO:check if best idea. This would be used by the system to keep track of the target
     private int targetNumber = 0;
 
     // props to set before update
@@ -33,10 +32,6 @@ public class Particle {
         this.beta = beta;
         this.position = position;
         this.velocity = velocity;
-    }
-    // TODO: maybe remove this
-    public Particle(double radius, Vector position, Vector velocity) {
-        this( new ParticleRadius(radius, radius, 1, radius), 0, 0, position, velocity );
     }
 
     // getters

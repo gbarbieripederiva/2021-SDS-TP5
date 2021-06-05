@@ -21,15 +21,6 @@ public class CPMSystem {
     }
 
     public void simulateStep(){
-        /*
-            TODO: check the following things
-
-            1)  should the wall calculate if its touching? could be optimized if you
-                get the nearest point and check yourself as you could use that point again
-            2)  What happens if a particle is touching two walls? probably shouldnt happen
-            3)  What happens if a particle is touching two particles simultaneously?
-            4)  The interaction between particles maybe optimized wth cellIndexMethod (Agus help!!)
-        */
         // No particle starts escaping for no reason
         Vector vec0 = new Vector(0,0);
         for (Particle p : particles) {
@@ -71,7 +62,6 @@ public class CPMSystem {
         for (Iterator<Particle> it = particles.iterator(); it.hasNext();) {
             Particle p = it.next();
             boolean removed = false;
-            // TODO: look into particle having a reference to an iterator of targets
             Wall target = this.targets.get(p.getTargetNumber());
             if(target.getStartPos().getY() >= p.getPosition().getY()){
                 if(this.targets.size() > p.getTargetNumber()+1){

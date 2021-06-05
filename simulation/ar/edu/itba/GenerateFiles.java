@@ -50,10 +50,8 @@ public class GenerateFiles {
         // Add targets
         List<Wall> targets = new ArrayList<>();
         targets.add(new Wall(new Vector((WALL_SIDE+OPEN_SPACE)/2 - TARGET_WALL_GAP, 0),new Vector((WALL_SIDE-OPEN_SPACE)/2 + TARGET_WALL_GAP, 0)));
-        // TODO: check this values for second target
         targets.add(new Wall(new Vector(WALL_SIDE,- SECOND_TARGET_DISTANCE), new Vector(0,- SECOND_TARGET_DISTANCE)));
 
-        // TODO: check this whole particle generation
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < PARTICLES_TO_GENERATE; i++) {
             particles.add(new Particle(

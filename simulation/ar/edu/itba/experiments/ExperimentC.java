@@ -16,7 +16,7 @@ import ar.edu.itba.models.particle.ParticleRadius;
 import ar.edu.itba.models.particle.Vector;
 
 public class ExperimentC {
-    private static final int TRIES_TO_DO = 3;
+    private static final int TRIES_TO_DO = 25;
     private static final String OUTPUT_FILENAME = "./data/experiment/experimentC.txt";
     private static final double[] OPEN_SPACES = {1.2, 1.8, 2.4, 3.0};
     private static final double WALL_SIDE = 20;
@@ -45,6 +45,7 @@ public class ExperimentC {
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString(), false));
 
+        // TODO: intervalo donde el caudal es estacionario durante la descarga
         writer.write("" + SEED + "-" + TIME_STEP);
         for (int simulationNumber = 0; simulationNumber < OPEN_SPACES.length; simulationNumber++) {
             writer.write("\n" + OPEN_SPACES[simulationNumber] + "-" + PARTICLES_TO_GENERATE[simulationNumber]);
@@ -83,10 +84,8 @@ public class ExperimentC {
         // Add targets
         List<Wall> targets = new ArrayList<>();
         targets.add(new Wall(new Vector((WALL_SIDE+openSpace)/2 - TARGET_WALL_GAP, 0),new Vector((WALL_SIDE-openSpace)/2 + TARGET_WALL_GAP, 0)));
-        // TODO: check this values for second target
         targets.add(new Wall(new Vector(WALL_SIDE,- SECOND_TARGET_DISTANCE), new Vector(0,- SECOND_TARGET_DISTANCE)));
 
-        // TODO: check this whole particle generation
         List<Particle> particles = new ArrayList<>();
         for (int i = 0; i < particlesToGenerate; i++) {
             particles.add(new Particle(

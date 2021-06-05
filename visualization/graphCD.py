@@ -67,11 +67,52 @@ for i, (iteration_x, iteration_y) in enumerate(zip(xs, ys)):
         accum_y /= len(iteration_y)
         avg_y[i].append(accum_y)
 
+caudales = []
+errores = []
 for i in range(len(avg_y)):
-    plt.plot(avg_x, avg_y[i], label=f"N={ns[i]} d={ds[i]}", linewidth=2)
+    caudales.append(np.mean(avg_y[i]))
+    errores.append(np.std(avg_y[i]))
 
-plt.xlabel('Tiempo (s)', fontsize=18)
+plt.scatter(ds, caudales)
+plt.errorbar(ds, caudales, yerr=errores, ecolor='gray', capsize=2)
+plt.xticks(np.arange(min(ds), max(ds) + 0.1, 0.6))
+plt.yticks(np.arange(0, max(caudales) + 1, 1))
+plt.xlabel('Tamaño de salida (m)', fontsize=18)
 plt.ylabel('Caudal (1/s)', fontsize=16)
-plt.legend(fontsize=16)
+plt.gcf().set_size_inches(16,12)
+plt.show()
+
+# for i in range(len(avg_y)):
+#     plt.plot(avg_x, avg_y[i], label=f"N={ns[i]} d={ds[i]}", linewidth=2)
+# plt.xlabel('Tiempo (s)', fontsize=18)
+# plt.ylabel('Caudal (1/s)', fontsize=16)
+# plt.legend(fontsize=16)
+# plt.gcf().set_size_inches(16,12)
+# plt.show()
+
+caudales_teoricos = []
+for d in ds:
+    caudales_teoricos.append((d-(0.32-0.15)/2) ** 1.5)  # TODO: Chequear formula
+
+precision = 0.00001
+Bs = np.arange(0, 1.25, precision)
+erroresB = []
+minError = -1
+minB = 0
+for B in Bs:
+    accum = 0
+    for y, fx in zip(caudales, caudales_teoricos):
+        accum += (y - B*fx) ** 2
+    erroresB.append(accum)
+    if minError == -1 or accum < minError:
+        minError = accum
+        minB = B
+
+print("B:",minB)
+print("Error minimo:", minError)
+
+plt.plot(Bs, erroresB)
+plt.xlabel('B', fontsize=18)
+plt.ylabel('Error', fontsize=16)
 plt.gcf().set_size_inches(16,12)
 plt.show()
