@@ -19,11 +19,12 @@ def parse(path):
 x,ys = parse(EXPERIMENT_DATA_PATH)
 mat = np.matrix(ys)
 dev = mat.std(0)
-y = mat.mean(0).transpose()
+y = np.array(mat.mean(0).transpose()).flatten()
+errores = np.array(mat.std(0)).flatten()
 
-print(dev)
-
-plt.plot(y,x, linewidth=2)
+plt.plot(y, x, linewidth=2, color='b')
+# plt.scatter(y, x)
+plt.errorbar(y, x, xerr=errores, ecolor='gray', capsize=2)
 
 plt.xlabel('Tiempo (s)', fontsize=18)
 plt.ylabel('Particulas Egresadas', fontsize=16)
