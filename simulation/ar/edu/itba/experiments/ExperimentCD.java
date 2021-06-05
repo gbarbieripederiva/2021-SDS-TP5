@@ -15,9 +15,9 @@ import ar.edu.itba.models.particle.Particle;
 import ar.edu.itba.models.particle.ParticleRadius;
 import ar.edu.itba.models.particle.Vector;
 
-public class ExperimentC {
-    private static final int TRIES_TO_DO = 25;
-    private static final String OUTPUT_FILENAME = "./data/experiment/experimentC.txt";
+public class ExperimentCD {
+    private static final int TRIES_TO_DO = 10;
+    private static final String OUTPUT_FILENAME = "./data/experiment/experimentCD.txt";
     private static final double[] OPEN_SPACES = {1.2, 1.8, 2.4, 3.0};
     private static final double WALL_SIDE = 20;
     private static final double TARGET_WALL_GAP = 0.1;
@@ -55,13 +55,18 @@ public class ExperimentC {
                 CPMSystem system = generateSystem(OPEN_SPACES[simulationNumber], PARTICLES_TO_GENERATE[simulationNumber]);
                 long i = 0;
                 int pqty = system.particles.size();
-                int previousQty = pqty;
+//                int previousQty = pqty;
                 for (; system.particles.size() > 0; i++) {
                     int currPqty = system.particles.size();
-                    if (previousQty - currPqty > 0) {
-                        writer.write("" + (system.deltaTime * i) + "-" + (pqty - currPqty) + " ");
-                        previousQty = currPqty;
-                    }
+//                    if (previousQty - currPqty > 0) {
+                        double avgRadius = 0;
+                        for (Particle particle: system.particles){
+                            avgRadius += particle.getRadius();
+                        }
+                        avgRadius /= system.particles.size();
+                        writer.write("" + (system.deltaTime * i) + "-" + (pqty - currPqty) + "-" + avgRadius + " " );
+//                        previousQty = currPqty;
+//                    }
                     system.simulateStep();
                 }
                 System.out.println("tries:" + simulationNumber + "." + tries);
