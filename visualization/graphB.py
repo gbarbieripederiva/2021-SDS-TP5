@@ -28,6 +28,5 @@ plt.errorbar(y, x, xerr=errores, ecolor='gray', capsize=2)
 
 plt.xlabel('Tiempo (s)', fontsize=18)
 plt.ylabel('Particulas Egresadas', fontsize=16)
-plt.legend(fontsize=16)
 plt.gcf().set_size_inches(16,12)
 plt.show()

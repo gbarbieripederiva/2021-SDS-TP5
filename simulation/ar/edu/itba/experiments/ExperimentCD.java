@@ -52,28 +52,21 @@ public class ExperimentCD {
                 writer.write("\n");
                 // Generate system and execute simulation
                 CPMSystem system = generateSystem(OPEN_SPACES[simulationNumber], PARTICLES_TO_GENERATE[simulationNumber]);
-                long i = 0;
-                int pqty = 0;
-                for (Particle particle: system.particles){
-                    if(particle.getTargetNumber() == 0)
-                        pqty++;
-                }
-//                int previousQty = pqty;
-                int currPqty = 0;
-                for (; system.particles.size() > 0; i++) {
+                int pqty = system.particles.size();
+                for (long i = 0; system.particles.size() > 0; i++) {
+                    int currPqty = 0;
                     for (Particle particle: system.particles){
                         if(particle.getTargetNumber() == 0)
                             currPqty++;
                     }
-//                    if (previousQty - currPqty > 0) {
-                        double avgRadius = 0;
-                        for (Particle particle: system.particles){
-                            avgRadius += particle.getRadius();
-                        }
-                        avgRadius /= system.particles.size();
-                        writer.write("" + (system.deltaTime * i) + "-" + (pqty - currPqty) + "-" + avgRadius + " " );
-//                        previousQty = currPqty;
-//                    }
+
+                    double avgRadius = 0;
+                    for (Particle particle: system.particles){
+                        avgRadius += particle.getRadius();
+                    }
+                    avgRadius /= system.particles.size();
+
+                    writer.write("" + (system.deltaTime * i) + "-" + (pqty - currPqty) + "-" + avgRadius + " " );
                     system.simulateStep();
                 }
                 System.out.println("tries:" + simulationNumber + "." + tries);

@@ -57,15 +57,34 @@ def max_time(times):
 
 
 dt, xs, ys, rs, ds, ns = parse(EXPERIMENT_DATA_PATH)
-avg_x = np.arange(0, max_time(xs), 3)
+start_second = int(9 / dt)
+end_second = int(81 / dt)
+time_step = 3  # seconds
+start_y = []
+for i in range(len(ys)):
+    start_y.append([])
+    for j in range(len(ys[i])):
+        start_y[i].append(ys[i][j][start_second - int(1/ dt)])
+for i in range(len(xs)):
+    for j in range(len(xs[i])):
+        xs[i][j] = xs[i][j][start_second:end_second]
+        ys[i][j] = ys[i][j][start_second:end_second]
+
+
+for i in range(len(rs)):
+    for j in range(len(rs[i])):
+        rs[i][j] = rs[i][j][start_second:end_second]
+
+
+avg_x = np.arange(start_second * dt, end_second * dt + 1, time_step)
 avg_y = []
 for i, (iteration_x, iteration_y) in enumerate(zip(xs, ys)):
     print(i)
     avg_y.append([])
     for time in avg_x:
         accum_y = 0
-        for sim_x, sim_y in zip(iteration_x, iteration_y):
-            prev_y = 0
+        for j, (sim_x, sim_y) in enumerate(zip(iteration_x, iteration_y)):
+            prev_y = start_y[i][j]
             for x, y in zip(sim_x, sim_y):
                 if np.ceil(x) == time:
                     accum_y += y - prev_y
@@ -89,7 +108,6 @@ avg_r = []
 for rad in radios:
     avg_r.append(np.mean(rad))
 
-print(avg_r)
 
 plt.scatter(ds, caudales)
 plt.errorbar(ds, caudales, yerr=errores, ecolor='gray', capsize=2)
@@ -113,7 +131,7 @@ for d, r in zip(ds, avg_r):
     caudales_teoricos.append((d-0.5*r) ** 1.5)
 
 precision = 0.00001
-Bs = np.arange(0, 1.25, precision)
+Bs = np.arange(0, 2, precision)
 erroresB = []
 minError = -1
 minB = 0
@@ -130,6 +148,9 @@ print("B:",minB)
 print("Error minimo:", minError)
 
 plt.plot(Bs, erroresB)
+plt.scatter([minB], [minError])
+plt.annotate("({:.3f}, {:.3f})".format(minB, minError), (minB, minError + 2), horizontalalignment='center', verticalalignment='top')
+
 plt.xlabel('B', fontsize=18)
 plt.ylabel('Error', fontsize=16)
 plt.gcf().set_size_inches(16,12)
