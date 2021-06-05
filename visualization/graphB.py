@@ -1,5 +1,6 @@
 import os
 import matplotlib.pyplot as plt
+import numpy as np
 
 EXPERIMENT_DATA_PATH = os.path.join("..","data","experiment", "experimentAB.txt")
 
@@ -16,13 +17,11 @@ def parse(path):
 
 
 x,ys = parse(EXPERIMENT_DATA_PATH)
+mat = np.matrix(ys)
+dev = mat.std(0)
+y = mat.mean(0).transpose()
 
-y = []
-for i in range(len(x)):
-    y.append(0)
-    for times in ys:
-        y[i]+=times[i]
-    y[i] = y[i] / len(ys)
+print(dev)
 
 plt.plot(y,x, linewidth=2)
 
