@@ -24,8 +24,7 @@ for i in range(len(x)):
         y[i]+=times[i]
     y[i] = y[i] / len(ys)
 
-for i,_ in enumerate(ys):
-    plt.plot(y,x, label=f"Intento {i}", linewidth=2)
+plt.plot(y,x, linewidth=2)
 
 plt.xlabel('Tiempo (s)', fontsize=18)
 plt.ylabel('Particulas Egresadas', fontsize=16)

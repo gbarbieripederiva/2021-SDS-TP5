@@ -2,7 +2,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-EXPERIMENT_DATA_PATH = os.path.join("..","data","experiment", "experimentC.txt")
+EXPERIMENT_DATA_PATH = os.path.join("..","data","experiment", "experimentCD.txt")
 
 def parse(path):
     file = open(path, "r")
@@ -10,6 +10,7 @@ def parse(path):
     dt = float(line[1])
     xs = []
     ys = []
+    rs = []
     ds = []
     ns = []
 
@@ -23,21 +24,26 @@ def parse(path):
         line = file.readline()
         x_sim = []
         y_sim = []
+        r_sim = []
         while line!="\n" and line!='':
             temp = line.strip().split(" ")
             x = []
             y = []
+            r = []
             for j in temp:
                 aux = j.strip().split("-")
                 x.append(float(aux[0]))
                 y.append(int(aux[1]))
+                r.append(float(aux[2]))
             x_sim.append(x)
             y_sim.append(y)
+            r_sim.append(r)
             line = file.readline()
         xs.append(x_sim)
         ys.append(y_sim)
+        rs.append(r_sim)
     
-    return dt, xs, ys, ds, ns
+    return dt, xs, ys, rs, ds, ns
 
 
 def max_time(times):
@@ -50,7 +56,7 @@ def max_time(times):
     return np.ceil(max_t)
 
 
-dt, xs, ys, ds, ns = parse(EXPERIMENT_DATA_PATH)
+dt, xs, ys, rs, ds, ns = parse(EXPERIMENT_DATA_PATH)
 avg_x = np.arange(0, max_time(xs), 3)
 avg_y = []
 for i, (iteration_x, iteration_y) in enumerate(zip(xs, ys)):
@@ -68,10 +74,22 @@ for i, (iteration_x, iteration_y) in enumerate(zip(xs, ys)):
         avg_y[i].append(accum_y)
 
 caudales = []
+radios = []
 errores = []
 for i in range(len(avg_y)):
     caudales.append(np.mean(avg_y[i]))
     errores.append(np.std(avg_y[i]))
+
+for i, radius_iteration in enumerate(rs):
+    radios.append([])
+    for sim_r in radius_iteration:
+        radios[i].append(np.mean(sim_r))
+
+avg_r = []
+for rad in radios:
+    avg_r.append(np.mean(rad))
+
+print(avg_r)
 
 plt.scatter(ds, caudales)
 plt.errorbar(ds, caudales, yerr=errores, ecolor='gray', capsize=2)
@@ -91,8 +109,8 @@ plt.show()
 # plt.show()
 
 caudales_teoricos = []
-for d in ds:
-    caudales_teoricos.append((d-(0.32-0.15)/2) ** 1.5)  # TODO: Chequear formula
+for d, r in zip(ds, avg_r):
+    caudales_teoricos.append((d-0.5*r) ** 1.5)  # TODO: Chequear formula
 
 precision = 0.00001
 Bs = np.arange(0, 1.25, precision)
