@@ -22,6 +22,8 @@ for i,_ in enumerate(ys):
 
 plt.xlabel('Tiempo (s)', fontsize=18)
 plt.ylabel('Particulas Egresadas', fontsize=16)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
 plt.legend(fontsize=16)
 plt.gcf().set_size_inches(16,12)
 plt.show()

@@ -57,101 +57,100 @@ def max_time(times):
 
 
 dt, xs, ys, rs, ds, ns = parse(EXPERIMENT_DATA_PATH)
-start_second = int(9 / dt)
-end_second = int(81 / dt)
-time_step = 3  # seconds
+start_second = 10
+end_second = 80
 start_y = []
-for i in range(len(ys)):
-    start_y.append([])
-    for j in range(len(ys[i])):
-        start_y[i].append(ys[i][j][start_second - int(1/ dt)])
+time_step = 1
+start_index = int(start_second/dt)
+end_index = int(end_second/dt)
+
 for i in range(len(xs)):
+    start_y.append([])
     for j in range(len(xs[i])):
-        xs[i][j] = xs[i][j][start_second:end_second]
-        ys[i][j] = ys[i][j][start_second:end_second]
+        xs[i][j] = xs[i][j][start_index:end_index]
+        ys[i][j] = ys[i][j][start_index:end_index]
+        rs[i][j] = rs[i][j][start_index:end_index]
+        start_y[i].append(ys[i][j][0])
 
-
-for i in range(len(rs)):
-    for j in range(len(rs[i])):
-        rs[i][j] = rs[i][j][start_second:end_second]
-
-
-avg_x = np.arange(start_second * dt, end_second * dt + 1, time_step)
+times = np.arange(start_second + 1, end_second + 0.01, time_step)
 avg_y = []
-for i, (iteration_x, iteration_y) in enumerate(zip(xs, ys)):
-    print(i)
+for nd_number, (same_nd_x, same_nd_y) in enumerate(zip(xs, ys)):
+    print(nd_number)
     avg_y.append([])
-    for time in avg_x:
-        accum_y = 0
-        for j, (sim_x, sim_y) in enumerate(zip(iteration_x, iteration_y)):
-            prev_y = start_y[i][j]
-            for x, y in zip(sim_x, sim_y):
+    for time in times:
+        caudal = 0
+        for realization_number, (same_realization_x, same_realization_y) in enumerate(zip(same_nd_x, same_nd_y)):
+            prev_y = start_y[nd_number][realization_number]
+            for x, y in zip(same_realization_x, same_realization_y):
                 if np.ceil(x) == time:
-                    accum_y += y - prev_y
+                    caudal += y - prev_y
                 prev_y = y
-        accum_y /= len(iteration_y)
-        avg_y[i].append(accum_y)
+        caudal /= time_step * len(same_nd_y)
+        avg_y[nd_number].append(caudal)
 
-caudales = []
-radios = []
-errores = []
-for i in range(len(avg_y)):
-    caudales.append(np.mean(avg_y[i]))
-    errores.append(np.std(avg_y[i]))
+caudales = np.mean(avg_y, 1)
+errores = np.std(avg_y, 1)
 
-for i, radius_iteration in enumerate(rs):
-    radios.append([])
-    for sim_r in radius_iteration:
-        radios[i].append(np.mean(sim_r))
-
-avg_r = []
-for rad in radios:
-    avg_r.append(np.mean(rad))
-
+avg_r = np.mean(rs)
 
 plt.scatter(ds, caudales)
 plt.errorbar(ds, caudales, yerr=errores, ecolor='gray', capsize=2)
-plt.xticks(np.arange(min(ds), max(ds) + 0.1, 0.6))
-plt.yticks(np.arange(0, max(caudales) + 1, 1))
+plt.xticks(np.arange(min(ds), max(ds) + 0.1, 0.6), fontsize=16)
+plt.yticks(np.arange(0, max(caudales) + 1, 1), fontsize=16)
 plt.xlabel('Tamaño de salida (m)', fontsize=18)
 plt.ylabel('Caudal (1/s)', fontsize=16)
-plt.gcf().set_size_inches(16,12)
+plt.gcf().set_size_inches(16, 12)
 plt.show()
 
-# for i in range(len(avg_y)):
-#     plt.plot(avg_x, avg_y[i], label=f"N={ns[i]} d={ds[i]}", linewidth=2)
-# plt.xlabel('Tiempo (s)', fontsize=18)
-# plt.ylabel('Caudal (1/s)', fontsize=16)
-# plt.legend(fontsize=16)
-# plt.gcf().set_size_inches(16,12)
-# plt.show()
 
-caudales_teoricos = []
-for d, r in zip(ds, avg_r):
-    caudales_teoricos.append((d-0.5*r) ** 1.5)
-
-precision = 0.00001
+precision = 0.001
 Bs = np.arange(0, 2, precision)
+c = 0.5
 erroresB = []
 minError = -1
 minB = 0
 for B in Bs:
     accum = 0
-    for y, fx in zip(caudales, caudales_teoricos):
-        accum += (y - B*fx) ** 2
+    for y, d, n in zip(caudales, ds, ns):
+        accum += (y - (B*(d-c*avg_r) ** 1.5)) ** 2
     erroresB.append(accum)
     if minError == -1 or accum < minError:
         minError = accum
         minB = B
 
-print("B:",minB)
+print("B:", minB)
 print("Error minimo:", minError)
 
 plt.plot(Bs, erroresB)
 plt.scatter([minB], [minError])
-plt.annotate("({:.3f}, {:.3f})".format(minB, minError), (minB, minError + 2), horizontalalignment='center', verticalalignment='top')
+plt.annotate("({:.3f}, {:.3f})".format(minB, minError), (minB, minError + 4),
+             horizontalalignment='center', verticalalignment='top', fontsize=16)
 
 plt.xlabel('B', fontsize=18)
 plt.ylabel('Error', fontsize=16)
 plt.gcf().set_size_inches(16,12)
+plt.xticks(fontsize=14)
+plt.yticks(fontsize=14)
+plt.show()
+
+adjusted_caudal = []
+interest_points = []
+
+ds_2 = np.arange(1.2, 3.0, 0.6 / 100)
+for d in ds_2:
+    adjusted_caudal.append(minB * ((d - c * avg_r) ** 1.5))
+
+for d in ds:
+    interest_points.append(minB * ((d-c*avg_r) ** 1.5))
+
+plt.scatter(ds, caudales)
+plt.errorbar(ds, caudales, yerr=errores, ecolor='gray', capsize=2, label='Valores medidos')
+plt.scatter(ds, interest_points)
+plt.plot(ds_2, adjusted_caudal, label='Ley de Beverloo')
+plt.xticks(np.arange(min(ds), max(ds) + 0.1, 0.6), fontsize=14)
+plt.yticks(np.arange(0, max(caudales) + 1, 1), fontsize=14)
+plt.xlabel('Tamaño de salida (m)', fontsize=18)
+plt.ylabel('Caudal (1/s)', fontsize=16)
+plt.gcf().set_size_inches(16,12)
+plt.legend(fontsize=16)
 plt.show()
