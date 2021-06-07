@@ -1,9 +1,13 @@
+import os
+from typing import cast
 from matplotlib.collections import PatchCollection
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 
 INPUT_FILE = "../data/output.txt"
+OUTPUT_FOLDER = "animation"
+OUTPUT_FILE_WITHOUT_EXTENSION = "animation"
 
 class Particle:
     def __init__(self,x = 0,y = 0,r = 0):
@@ -76,6 +80,32 @@ plt.ylim([-15, 25])
 plt.gcf().set_size_inches(12,12)
 plt.gca().set_aspect("equal","box")
 
+try:
+    os.makedirs(OUTPUT_FOLDER)
+except:
+    print("could make dirs")
+
+WHEN_TO_SAVE = -1
+def get_when_to_save(total):
+    t = total
+    res = 1
+    while t > 10:
+        res = res * 10
+        t = t / 10
+    if res != 1:
+        res = res / 10
+    return res
+def progress_callback(curr,total):
+    global WHEN_TO_SAVE
+    if WHEN_TO_SAVE < 0:
+        WHEN_TO_SAVE = get_when_to_save(total)
+    if curr % WHEN_TO_SAVE == 0:
+        print(f"current frame:{curr}\ttotal:{total}")
+
+
 ani = FuncAnimation(plt.gcf(),update_circles,frames=len(snaps),interval=1000*snaps_time_step,blit=False)
+ani.save(os.path.join(OUTPUT_FOLDER,OUTPUT_FILE_WITHOUT_EXTENSION+".avi"),progress_callback=progress_callback)
+ani.save(os.path.join(OUTPUT_FOLDER,OUTPUT_FILE_WITHOUT_EXTENSION+".gif"),progress_callback=progress_callback)
+
 
 plt.show()
