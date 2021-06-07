@@ -16,6 +16,8 @@ import ar.edu.itba.models.particle.Vector;
 
 public class SimulationApp {
     public static final double TIME_STEP = 0.025;
+    public static final int STEPS_BEFORE_SAVE = 2;
+    public static final int STEPS_BEFORE_SHOW_UPDATE = 1000;
     public static final String INPUT_FILENAME = "./data/system.txt";
     public static final String OUTPUT_FILENAME = "./data/output.txt";
 
@@ -94,6 +96,7 @@ public class SimulationApp {
         }
         BufferedWriter writer = new BufferedWriter(new FileWriter(Paths.get(OUTPUT_FILENAME).toAbsolutePath().toString(), false));
 
+        writer.write(""+TIME_STEP + " " + TIME_STEP*STEPS_BEFORE_SAVE + "\n");
         // add starting information
         Utils.writeWalls(system.walls, writer);
         writer.write("\n");
@@ -104,11 +107,11 @@ public class SimulationApp {
 
         // loop until condition is met
         for(long i = 0; continueLooping(system.deltaTime * i,system); i++){
-            if(i%100 == 0 && i != 0){
+            if(i%STEPS_BEFORE_SAVE == 0 && i != 0){
                 writer.write("\n");
                 Utils.writeParticles(system.particles, writer);
             }
-            if(i%1000 == 0){
+            if(i%STEPS_BEFORE_SHOW_UPDATE == 0){
                 System.out.println("Steps taken:" + i + ", time:" + system.deltaTime * i);
             }
             system.simulateStep();

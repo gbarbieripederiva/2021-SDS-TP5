@@ -25,6 +25,9 @@ targets = []
 snaps = []
 
 i = 0
+line = list(map(float,f.readline().strip().split(" ")))
+system_time_step = line[0]
+snaps_time_step = line[1]
 line = f.readline()
 while line:
     line = line.strip().split(" ")
@@ -56,7 +59,7 @@ def update_circles(i):
     global patch_collection
     global snaps
     patch_collection.set_paths(get_circles(snaps[i]))
-    ax.set_title("time: {:.2}".format(i*0.01))
+    ax.set_title("time: {:.2f}".format(i*snaps_time_step))
     return patch_collection
 
 ax = plt.gca()
@@ -73,6 +76,6 @@ plt.ylim([-15, 25])
 plt.gcf().set_size_inches(12,12)
 plt.gca().set_aspect("equal","box")
 
-ani = FuncAnimation(plt.gcf(),update_circles,frames=len(snaps),interval=1,blit=False)
+ani = FuncAnimation(plt.gcf(),update_circles,frames=len(snaps),interval=1000*snaps_time_step,blit=False)
 
 plt.show()
