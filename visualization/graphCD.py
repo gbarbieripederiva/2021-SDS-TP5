@@ -55,10 +55,9 @@ def max_time(times):
                 max_t = last_time
     return np.ceil(max_t)
 
-
 dt, xs, ys, rs, ds, ns = parse(EXPERIMENT_DATA_PATH)
-start_second = 10
-end_second = 80
+start_second = 0
+end_second = 100
 start_y = []
 time_step = 1
 start_index = int(start_second/dt)
@@ -142,6 +141,31 @@ for d in ds_2:
 
 for d in ds:
     interest_points.append(minB * ((d-c*avg_r) ** 1.5))
+
+y_test = []
+times_2 = np.arange(start_second + 1, end_second + 0.01, 5)
+for nd_number, (same_nd_x, same_nd_y) in enumerate(zip(xs, ys)):
+    print(nd_number)
+    y_test.append([])
+
+    prev_y = 0
+    for time in times_2:
+        caudal = 0
+        for x, y in zip(same_nd_x[0], same_nd_y[0]):
+            if np.ceil(x) == time:
+                caudal += y - prev_y
+            prev_y = y
+        caudal /= time_step
+        y_test[nd_number].append(caudal)
+
+for i in range(len(y_test)):
+    plt.plot(times_2, y_test[i], label=f"N={ns[i]} d={ds[i]}", linewidth=2)
+    plt.scatter(times_2, y_test[i])
+    plt.xlabel('Tiempo (s)', fontsize=18)
+    plt.ylabel('Caudal (1/s)', fontsize=16)
+    plt.legend(fontsize=16)
+    plt.gcf().set_size_inches(16,12)
+    plt.show()
 
 plt.scatter(ds, caudales)
 plt.errorbar(ds, caudales, yerr=errores, ecolor='gray', capsize=2, label='Valores medidos')
