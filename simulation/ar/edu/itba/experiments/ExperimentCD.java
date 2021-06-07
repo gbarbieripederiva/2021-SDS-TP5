@@ -16,7 +16,7 @@ import ar.edu.itba.models.particle.ParticleRadius;
 import ar.edu.itba.models.particle.Vector;
 
 public class ExperimentCD {
-    private static final int TRIES_TO_DO = 10;
+    private static final int TRIES_TO_DO = 3;
     private static final String OUTPUT_FILENAME = "./data/experiment/experimentCD.txt";
     private static final double[] OPEN_SPACES = {1.2, 1.8, 2.4, 3.0};
     private static final double WALL_SIDE = 20;
